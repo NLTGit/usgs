@@ -105,9 +105,11 @@ def datasets(dataset, node, ll=None, ur=None, start_date=None, end_date=None, ap
         "jsonRequest": payloads.datasets(dataset, node, ll=ll, ur=ur, start_date=start_date, end_date=end_date, api_key=api_key)
     }
     r = requests.post(url, payload)
-    response = r.json()
-
-    _check_for_usgs_error(response)
+    if r > '':
+        response = r.json()
+        _check_for_usgs_error(response)
+    else:
+        response = {}
 
     return response
 
@@ -122,7 +124,6 @@ def download(dataset, node, entityids, product='STANDARD', api_key=None):
     with which scene/entity id. The URL can be parsed, but the structure
     varies depending on the product.
     """
-
     api_key = _get_api_key(api_key)
 
     url = '{}/download'.format(USGS_API)
